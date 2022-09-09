@@ -50,7 +50,7 @@ std::map<std::string, Configuration::OptionDescriptionList> CoreThresholdPartiti
   return {{"Core threshold partitioning", {
       {CORE_THRESHOLD.c_str(), po::value<double>()->default_value(0.0), "The core threshold level"},
       {CORE_MINAREA.c_str(), po::value<int>()->default_value(0), "The minimum pixel area for partitioning"},
-      {CORE_THRESH_USE.c_str(), po::bool_switch(), "Activate core threshold partitioning"}
+      {CORE_THRESH_USE.c_str(), po::value<bool>()->default_value(false), "Activate core threshold partitioning"}
   }}};
 }
 

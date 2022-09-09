@@ -31,7 +31,7 @@ ProgressReporterFactory::ProgressReporterFactory() : m_min_interval{std::chrono:
 void ProgressReporterFactory::addOptions(boost::program_options::options_description& options) const {
   options.add_options() (PROGRESS_MIN_INTERVAL.c_str(), po::value<int>()->default_value(5),
      "Minimal interval to wait before printing a new log entry with the progress report");
-  options.add_options() (PROGRESS_BAR_DISABLED.c_str(), po::bool_switch(),
+  options.add_options() (PROGRESS_BAR_DISABLED.c_str(), po::value<bool>()->default_value(false),
           "Disable progress bar display");
 }
 

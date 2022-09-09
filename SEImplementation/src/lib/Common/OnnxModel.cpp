@@ -16,12 +16,15 @@ namespace SourceXtractor {
 
 OnnxModel::OnnxModel(const std::string& model_path) {
   m_model_path = model_path;
+  Ort::SessionOptions session_options;
+  session_options.SetInterOpNumThreads(1);
 
   Elements::Logging onnx_logger = Elements::Logging::getLogger("Onnx");
   auto allocator = Ort::AllocatorWithDefaultOptions();
 
   onnx_logger.info() << "Loading ONNX model " << model_path;
-  m_session = Euclid::make_unique<Ort::Session>(ORT_ENV, model_path.c_str(), Ort::SessionOptions{nullptr});
+  //m_session = Euclid::make_unique<Ort::Session>(ORT_ENV, model_path.c_str(), Ort::SessionOptions{nullptr});
+  m_session = Euclid::make_unique<Ort::Session>(ORT_ENV, model_path.c_str(), session_options);
 
   if (m_session->GetOutputCount() != 1) {
     throw Elements::Exception() << "Only ONNX models with a single output tensor are supported";

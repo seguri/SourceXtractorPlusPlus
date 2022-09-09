@@ -46,7 +46,7 @@ std::map<std::string, Configuration::OptionDescriptionList> SE2BackgroundConfig:
           "Background mesh cell size to determine a value."},
       {SMOOTHINGBOX_VALUE.c_str(), po::value<std::string>()->default_value(std::string("3")),
           "Background median filter size"},
-      {LEGACY_BACKGROUND.c_str(), po::bool_switch(),
+      {LEGACY_BACKGROUND.c_str(), po::value<bool>()->default_value(false),
           "Deprecated, kept for compatibility"}
   }}};
 }
@@ -62,6 +62,11 @@ void SE2BackgroundConfig::initialize(const UserValues& args) {
     m_smoothing_box = Euclid::stringToVector<int>(smoothing_box_str);
   }
 
+  if (args.find(LEGACY_BACKGROUND) != args.end() && args.at(LEGACY_BACKGROUND).as<bool>()) {
+    logger.warn() << "The option "
+                  << LEGACY_BACKGROUND << " is deprecated and has no effect starting at version 0.17";
+  }
+
   auto less_eq_0 = [](int v) { return v <= 0; };
   auto less_0 = [](int v) { return v < 0; };
 
@@ -70,10 +75,6 @@ void SE2BackgroundConfig::initialize(const UserValues& args) {
   }
   if (std::find_if(m_smoothing_box.begin(), m_smoothing_box.end(), less_0) != m_smoothing_box.end()) {
     throw Elements::Exception() << "There are value(s) < 0 in smoothing-box-size: " << smoothing_box_str;
-  }
-  if (args.find(LEGACY_BACKGROUND) != args.end()) {
-    logger.warn() << "The option "
-                  << LEGACY_BACKGROUND << " is deprecated and has no effect starting at version 0.17";
   }
 }
 

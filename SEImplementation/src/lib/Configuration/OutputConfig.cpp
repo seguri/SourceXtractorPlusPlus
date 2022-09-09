@@ -62,8 +62,10 @@ std::map<std::string, Configuration::OptionDescriptionList> OutputConfig::getPro
           "The output properties to add in the output catalog"},
       {OUTPUT_FLUSH_SIZE.c_str(), po::value<int>()->default_value(100),
          "Write to the catalog after this number of sources have been processed (0 means once at the end)"},
-      {OUTPUT_UNSORTED.c_str(), po::bool_switch(),
-         "Write finished sources to the catalog without waiting for previously detected unfinished sources"}
+      {OUTPUT_UNSORTED.c_str(), po::value<bool>()->default_value(false),
+	  "Write finished sources to the catalog without waiting for previously detected unfinished sources"}
+      //{OUTPUT_UNSORTED.c_str(), po::bool_switch(),
+      //   "Write finished sources to the catalog without waiting for previously detected unfinished sources"}
   }}};
 }
 
